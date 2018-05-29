@@ -1,0 +1,30 @@
+package travis.halleck;
+
+import java.util.ArrayList;
+
+public class PlayerList {
+	static ArrayList<String> playerNameList = new ArrayList<String>();
+	static ArrayList<String> playerPathList = new ArrayList<String>();
+	
+	private boolean doesItemExist(String item){
+		return playerNameList.contains(item) ? true : false;
+	}
+		  
+    private int getItemIndex(String item){
+    	int index = -1;
+		if(doesItemExist(item)){
+			index = playerNameList.indexOf(item);
+		}
+		return index;
+	}
+		  
+    public static void addToNameList(String item){
+    	playerNameList.add(item);
+	}
+    
+    public static void addToPathList(String item) {
+    	playerPathList.add(item);
+    }
+		  
+	
+}

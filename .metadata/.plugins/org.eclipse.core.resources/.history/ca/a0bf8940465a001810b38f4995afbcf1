@@ -1,0 +1,44 @@
+package travis.halleck;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+
+public class MusicPlayer extends Thread{
+	private static String songPath;
+
+	public MusicPlayer(String songPath) {
+		this.songPath = songPath;
+	}
+	
+	public static synchronized void speak() {
+	
+	    new Thread(
+	            () -> {
+
+	                try {
+	                	FileInputStream fileInputStream = new FileInputStream(songPath);
+	                    
+
+	                    AdvancedPlayer advancedPlayer = new AdvancedPlayer(fileInputStream);
+	                    advancedPlayer.play();
+
+	                } catch (IOException | JavaLayerException exception) {
+
+	                    System.out.println("{X} Exception in TTS. ");
+	                    System.out.println(exception.getMessage());
+	                }
+
+	            }
+	    ).start();
+	}
+
+}

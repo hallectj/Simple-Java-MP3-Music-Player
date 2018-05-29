@@ -1,0 +1,5 @@
+package travis.halleck;
+
+public interface SongListener {
+	String currentSongPlaying();
+}

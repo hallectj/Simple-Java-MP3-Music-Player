@@ -1,0 +1,43 @@
+package travis.halleck;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+
+public class PlayerList {
+	static ArrayList<String> playerNameList = new ArrayList<String>();
+	static ArrayList<String> playerPathList = new ArrayList<String>();
+	
+	private static boolean doesItemExist(String item){
+		return playerNameList.contains(item) ? true : false;
+	}
+		  
+    private static int getItemIndex(String item){
+    	int index = -1;
+		if(doesItemExist(item)){
+			index = playerNameList.indexOf(item);
+		}
+		return index;
+	}
+		  
+    public static void addToNameList(String item){
+    	playerNameList.add(item);
+	}
+    
+    public static void addToPathList(String item) {
+    	playerPathList.add(item);
+    }
+    
+    
+    public static void populateComboBox(DefaultComboBoxModel comboBox) {
+    	
+    }
+	
+    public static int getListSize() {
+    	return playerNameList.size();
+    }
+    
+}

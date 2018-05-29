@@ -1,0 +1,28 @@
+1526527091221	Delete element
+1526527101726	Delete element
+1526527110663	Delete element
+1526527149730	Delete element
+1526527169111	Delete element
+1526528251478	Rename type 'MainGUI'
+1526529413928	Rename type 'NewPlayerlist'
+1526529511485	Rename type 'ModifyPlayerlist'
+1526538077682	Rename field 'centerPanel'
+1526538151857	Rename field 'bottomPanel2'
+1526538218125	Rename field 'bottomPanel'
+1526538232020	Rename field 'centerPanel'
+1526538247668	Rename field 'centerPanel2'
+1526539284334	Rename local variable 'panel'
+1526539550961	Rename local variable 'sl_leftPanel'
+1526540375149	Rename local variable 'sl_centerPanel'
+1526550660260	Rename field 'sl_mainPanel'
+1526581254035	Rename field 'nextSongButton'
+1526581268846	Rename field 'saveToPlaylist'
+1526711142090	Delete element
+1526718088737	Delete element
+1526730081350	Rename field 'stopButton'
+1526765331385	Move compilation unit
+1526765478632	Rename type 'BackgroundImage'
+1526767355937	Delete element
+1526767366348	Delete element
+1526770120679	Delete element
+1526772015818	Delete element

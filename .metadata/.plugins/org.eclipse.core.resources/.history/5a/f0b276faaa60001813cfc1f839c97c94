@@ -1,0 +1,56 @@
+package travis.halleck;
+
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
+public class FileSongChooser {
+	private static int instanceCount = 0;
+	private String lastDir = null;
+	private JFileChooser fileChooser = null;
+	private String name;
+	private String fullPath;
+	private File userDirectory;
+	private File selectedFile;
+	
+	private void filterSettings() {
+		fileChooser.setFileFilter(new FileNameExtensionFilter("MP3 files", "mp3"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
+	}
+	
+	public FileSongChooser() {
+		userDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+		System.out.println("fileChooser: " + fileChooser);
+		System.out.println("selectedFile: " + selectedFile);
+		if(selectedFile == null) {
+			fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		}else{
+			fileChooser = new JFileChooser(selectedFile);
+		}
+		computePaths();
+		instanceCount++;
+	}
+	
+	private void computePaths() {
+		
+		filterSettings();
+		int retVal = fileChooser.showOpenDialog(null);
+		
+		if(retVal == JFileChooser.APPROVE_OPTION) {
+			selectedFile = fileChooser.getSelectedFile();
+			System.out.println("selectedFile2: " + selectedFile + " instanceCount " + instanceCount);
+			fullPath = selectedFile.getAbsolutePath();	
+			name = selectedFile.getName();
+			fileChooser.setCurrentDirectory(selectedFile);
+		}
+	}
+	
+	public String getPlaylistName() {
+		return name;
+	}
+	
+	public String getFullPlaylistPath() {
+		return fullPath;
+	}
+}

@@ -1,0 +1,50 @@
+package travis.halleck;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+
+public class PlayerList {
+	private static int addedCount = -1;
+	private static ArrayList<String> playerPathList = new ArrayList<String>();
+	
+	private static boolean doesItemExist(String item){
+		return playerPathList.contains(item) ? true : false;
+	}
+		  
+    public static int getItemIndex(String item){
+    	int index = -1;
+		if(doesItemExist(item)){
+			index = playerPathList.indexOf(item);
+		}
+		return index;
+	}
+    
+    public static void addToPathList(String item) {
+    	playerPathList.add(item);
+    	addedCount++;
+    }
+	
+    public static int getListSize() {
+    	return playerPathList.size();
+    }
+    
+    public static String getCorrectFullPath(String item) {
+    	int index = getItemIndex(item);
+    	return playerPathList.get(index);
+    }
+    
+    public static String getFullPathByIndex(int index) {
+    	return playerPathList.get(index);
+    }
+    
+    public static void removeItem(String item) {
+    	int index = getItemIndex(item);
+    	addedCount--;
+    	playerPathList.remove(index);
+    }
+    
+}

@@ -1,0 +1,181 @@
+package travis.halleck;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+
+public class MusicPlayer {
+	private String songPath;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	private boolean isPaused;
+	private Player player;
+	private long tracker, pausePos, songLen;
+	private long streamBits;
+	
+	public MusicPlayer(String songPath) {
+		isPaused = false;
+		tracker = 0;
+		this.songPath = songPath;
+		streamBits = 0;
+	}
+	
+//	public void play() {
+//		try {
+//			
+//			fis = new FileInputStream(songPath);
+//			bis = new BufferedInputStream(fis);
+//			songLen = bis.available();
+//			tracker = songLen;
+//			player = new Player(bis);
+//		} catch (JavaLayerException | IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		new Thread() {
+//			public void run() {
+//				try {
+//					player.play();			
+//	
+//					System.out.println("songLen before: " + songLen);
+//					
+//					
+//					try {
+//						Thread.sleep(5000);
+//						System.out.println("songLen after 5 seconds: " + songLen);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					
+//					
+//				} catch (JavaLayerException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}.start();
+//	}
+	
+	public void play() {
+		try {
+		
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			songLen = bis.available();
+			tracker = songLen;
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		RunThreads runThreads = new RunThreads();
+		runThreads.start();
+
+		
+	}
+	
+	public void stop() {
+		isPaused = false;
+		if(player != null) {
+			player.close();
+			pausePos = 0;
+			songLen = 0;
+		}
+	}
+	
+	public void pause() {
+		isPaused = true;
+		if(player != null) {
+			try {
+				pausePos = fis.available();
+				player.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//player.close();
+		}
+	}
+	
+	public void resume() {
+		try {
+			isPaused = false;
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			
+			bis.skip(songLen - pausePos);
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		new Thread() {
+			public void run() {
+				try {
+					player.play();
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
+
+	public boolean isSongPaused() {
+		return isPaused;
+	}
+	
+	public void setPath(String absPath) {
+		songPath = absPath;
+	}
+	
+	public long getPausePos() {
+		return pausePos;
+	}
+	
+	public long getSongLength() {
+		return songLen;
+	}
+	
+	private class RunThreads implements Runnable{
+		private Thread thread;
+		
+		@Override
+		public void run() {
+			
+			try {
+				player.play();
+			} catch (JavaLayerException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		public void start() {
+			if(thread == null) {
+				thread = new Thread(this);
+				thread.start();
+				
+				
+				try {
+					player.play();
+				} catch (JavaLayerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		
+	}
+	
+}

@@ -1,0 +1,326 @@
+package travis.halleck;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.swing.AbstractButton;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.SpringLayout;
+import javax.swing.border.LineBorder;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+
+import javax.swing.border.EtchedBorder;
+
+public class MainGUI extends GenericFrame{
+	private JPanel mainPanel, leftPanel, centerPanel, innerPanel, bottomPanel;
+	private SpringLayout mainPanelLayout, leftPanelLayout, centerPanelLayout, innerPanelLayout, bottomPanelLayout;
+	private static DefaultComboBoxModel<String> defaultPlaylistComboBox;
+	private JComboBox<String> playListComboBox;
+	private JLabel label1, label2;
+	private JButton newPlayListButton, deleteButton;
+	private SpecialButtons playButton, stopButton, rewindButton, forwardButton, loopButton, pauseButton;
+	
+	private MusicPlayer mp;
+	
+	public MainGUI() throws IOException {
+		this.setVisible(true);
+		this.setTitle("MainGUI");
+		initUI();
+		mp = new MusicPlayer("");
+	}
+	
+	public static DefaultComboBoxModel getComboBox() {
+		return defaultPlaylistComboBox;
+	}
+	
+	private void initUI() {
+		//initialize layouts
+		mainPanelLayout = new SpringLayout();
+		leftPanelLayout = new SpringLayout();
+		centerPanelLayout = new SpringLayout();
+		innerPanelLayout = new SpringLayout();
+		bottomPanelLayout = new SpringLayout();
+		
+		
+		//initialize panels needed
+		mainPanel = new JPanel();
+		leftPanel = new JPanel();
+		innerPanel = new JPanel();
+		centerPanel = new JPanel();
+		bottomPanel = new JPanel();
+		
+		//initialize labels needed
+		label1 = new JLabel("JAVA MUSIC PLAYER");
+		label2 = new JLabel("Playlist");
+
+		
+		//initialize buttons needed
+		newPlayListButton = new JButton("New Playlist");
+		deleteButton = new JButton("Delete Song");		
+		playButton = new SpecialButtons("play", 25, 25);
+		stopButton = new SpecialButtons("stop", 25, 25);
+		rewindButton = new SpecialButtons("rewind", 25, 25);
+		forwardButton = new SpecialButtons("forward", 25, 25);
+		loopButton = new SpecialButtons("loop", 25, 25);
+		pauseButton = new SpecialButtons("pause", 25, 25);
+		
+		//playlist combobox
+		defaultPlaylistComboBox = new DefaultComboBoxModel<String>();
+		playListComboBox = new JComboBox<String>(defaultPlaylistComboBox);
+		playListComboBox.setPreferredSize(new Dimension(80, 25));		
+		
+		
+		
+		setupPanels();
+		setupLayout();
+		initEnterFrame();
+		specialButtonEvents();
+		enableSpecialButtons(false);
+		
+	}
+	
+	
+	public void enableSpecialButtons(boolean enable) {
+		Component[] component = bottomPanel.getComponents();
+		for(int i = 0; i<bottomPanel.getComponentCount(); i++) {
+			if(component[i] instanceof SpecialButtons) {
+				if(enable == true) {
+					component[i].setEnabled(true);
+				}else {
+					component[i].setEnabled(false);
+				}
+			}
+		}
+	}
+	
+	
+	private void setupLayout() {
+		//layout managers
+		mainPanel.setLayout(mainPanelLayout);
+		centerPanel.setLayout(centerPanelLayout);
+		leftPanel.setLayout(leftPanelLayout);	
+		bottomPanel.setLayout(bottomPanelLayout);
+		innerPanel.setLayout(innerPanelLayout);
+		
+		//mainPanel Layout
+		mainPanelLayout.putConstraint(SpringLayout.WEST, leftPanel, 10, SpringLayout.WEST, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.SOUTH, leftPanel, 225, SpringLayout.NORTH, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.EAST, leftPanel, 144, SpringLayout.WEST, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.NORTH, leftPanel, 10, SpringLayout.NORTH, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.NORTH, centerPanel, 0, SpringLayout.NORTH, leftPanel);
+		mainPanelLayout.putConstraint(SpringLayout.WEST, centerPanel, 6, SpringLayout.EAST, leftPanel);
+		mainPanelLayout.putConstraint(SpringLayout.SOUTH, centerPanel, 0, SpringLayout.SOUTH, leftPanel);
+		mainPanelLayout.putConstraint(SpringLayout.EAST, centerPanel, -6, SpringLayout.EAST, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.NORTH, bottomPanel, 6, SpringLayout.SOUTH, leftPanel);
+		mainPanelLayout.putConstraint(SpringLayout.WEST, bottomPanel, 10, SpringLayout.WEST, mainPanel);
+		mainPanelLayout.putConstraint(SpringLayout.SOUTH, bottomPanel, 86, SpringLayout.SOUTH, leftPanel);
+		mainPanelLayout.putConstraint(SpringLayout.EAST, bottomPanel, 0, SpringLayout.EAST, centerPanel);
+		
+		//leftPanel Layout
+		leftPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		leftPanelLayout.putConstraint(SpringLayout.NORTH, label2, 10, SpringLayout.NORTH, leftPanel);
+		leftPanelLayout.putConstraint(SpringLayout.WEST, label2, 45, SpringLayout.WEST, leftPanel);
+		leftPanelLayout.putConstraint(SpringLayout.NORTH, playListComboBox, 6, SpringLayout.SOUTH, label2);
+		leftPanelLayout.putConstraint(SpringLayout.WEST, playListComboBox, 22, SpringLayout.WEST, leftPanel);
+
+
+		//centerPanel Layout
+		centerPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		centerPanelLayout.putConstraint(SpringLayout.NORTH, newPlayListButton, 15, SpringLayout.SOUTH, label1);
+		centerPanelLayout.putConstraint(SpringLayout.NORTH, label1, 10, SpringLayout.NORTH, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.WEST, label1, 112, SpringLayout.WEST, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.NORTH, deleteButton, 0, SpringLayout.NORTH, newPlayListButton);
+		centerPanelLayout.putConstraint(SpringLayout.WEST, deleteButton, 6, SpringLayout.EAST, newPlayListButton);
+		centerPanelLayout.putConstraint(SpringLayout.EAST, deleteButton, -62, SpringLayout.EAST, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.EAST, newPlayListButton, 156, SpringLayout.WEST, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.WEST, newPlayListButton, 21, SpringLayout.WEST, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.NORTH, innerPanel, 14, SpringLayout.SOUTH, newPlayListButton);
+		centerPanelLayout.putConstraint(SpringLayout.WEST, innerPanel, 0, SpringLayout.WEST, newPlayListButton);
+		centerPanelLayout.putConstraint(SpringLayout.SOUTH, innerPanel, -16, SpringLayout.SOUTH, centerPanel);
+		centerPanelLayout.putConstraint(SpringLayout.EAST, innerPanel, 0, SpringLayout.EAST, deleteButton);
+		
+		
+		//innerPanel Layout
+		innerPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, Color.GRAY));
+		innerPanelLayout.putConstraint(SpringLayout.NORTH, playListComboBox, 32, SpringLayout.NORTH, leftPanel);
+		innerPanelLayout.putConstraint(SpringLayout.WEST, playListComboBox, 18, SpringLayout.WEST, leftPanel);
+		innerPanelLayout.putConstraint(SpringLayout.WEST, label2, 39, SpringLayout.WEST, leftPanel);
+		innerPanelLayout.putConstraint(SpringLayout.SOUTH, label2, -8, SpringLayout.NORTH, playListComboBox);
+		
+		
+		
+		//bottomPanel Layout
+		bottomPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, playButton, 12, SpringLayout.EAST, rewindButton);
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, rewindButton, 16, SpringLayout.EAST, stopButton);
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, forwardButton, 15, SpringLayout.EAST, playButton);
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, stopButton, 16, SpringLayout.EAST, loopButton);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, playButton, 10, SpringLayout.NORTH, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, stopButton, 10, SpringLayout.NORTH, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.SOUTH, playButton, 0, SpringLayout.SOUTH, rewindButton);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, rewindButton, 10, SpringLayout.NORTH, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.SOUTH, rewindButton, 0, SpringLayout.SOUTH, stopButton);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, forwardButton, 10, SpringLayout.NORTH, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.SOUTH, forwardButton, 0, SpringLayout.SOUTH, playButton);
+		bottomPanelLayout.putConstraint(SpringLayout.SOUTH, stopButton, 0, SpringLayout.SOUTH, loopButton);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, loopButton, 10, SpringLayout.NORTH, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, loopButton, 21, SpringLayout.WEST, bottomPanel);
+		bottomPanelLayout.putConstraint(SpringLayout.NORTH, pauseButton, 0, SpringLayout.NORTH, playButton);
+		bottomPanelLayout.putConstraint(SpringLayout.WEST, pauseButton, 13, SpringLayout.EAST, forwardButton);
+	}
+
+	private void setupPanels() {
+		this.getContentPane().add(mainPanel);
+		
+		//add to main panel
+		mainPanel.add(leftPanel);
+		mainPanel.add(centerPanel);
+		mainPanel.add(bottomPanel);
+		
+		//add to left panel
+		leftPanel.add(label2);
+		leftPanel.add(playListComboBox);
+		
+		
+		
+		//add to bottom panel
+		bottomPanel.add(playButton);
+		bottomPanel.add(rewindButton);
+		bottomPanel.add(forwardButton);
+		bottomPanel.add(stopButton);
+		bottomPanel.add(loopButton);
+		bottomPanel.add(pauseButton);
+		
+		
+		//add to center panel
+		centerPanel.add(innerPanel);
+		centerPanel.add(label1);
+		centerPanel.add(newPlayListButton);
+		centerPanel.add(deleteButton);
+		
+		//add to inner panel
+		
+		//TODO sine wave
+	}
+	
+	private void initEnterFrame() {
+		newPlayListButton.addActionListener((ActionEvent frameEvent) -> {
+			NewPlayerlistGUI playListGUI = NewPlayerlistGUI.getInstane();
+			playListGUI.SetVisiblity();
+		});
+		
+		deleteButton.addActionListener((ActionEvent framEvent) -> {
+			String highlight = defaultPlaylistComboBox.getSelectedItem().toString();
+			String pathName = PlayerList.getCorrectFullPath(highlight).substring(PlayerList.getCorrectFullPath(highlight).indexOf(highlight), PlayerList.getCorrectFullPath(highlight).length());
+			//if(/* check if highlighted item is playing, if so stop */) {
+			System.out.println("highlight is: " + highlight + " | " + "pathName is: " + pathName);
+			System.out.println("is pathName == highlight: " + pathName.equals(highlight)); 
+			if(pathName.equals(highlight)) {
+				mp.stop();
+				
+			}
+			//}
+			defaultPlaylistComboBox.removeElement(highlight);
+			PlayerList.removeItem(highlight);
+			if(defaultPlaylistComboBox.getSize() == 0) {
+				enableSpecialButtons(false);
+			}else {
+				enableSpecialButtons(true);
+			}
+		});
+		
+		//checks selected item, since there is an item to begin with, the combobox
+		//effectively has items and fullfills what I need this for, which is to 
+		//check for items and enable buttons if so.
+		playListComboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+                if(event.getStateChange() == ItemEvent.SELECTED) {
+                	System.out.println("state changed");
+                	enableSpecialButtons(true);
+                }	
+			}
+        });
+		
+	}
+	
+	private ImageIcon scaleImage(int w, int h, ImageIcon icon) {
+		 Image img = icon.getImage();
+		 Image newImg = img.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
+		 icon = new ImageIcon(newImg);
+		 return icon;
+	}
+	
+	private void specialButtonEvents() {
+		ClickListner cl = new ClickListner();
+		playButton.addActionListener(cl);
+		stopButton.addActionListener(cl);
+		pauseButton.addActionListener(cl);
+		forwardButton.addActionListener(cl);
+	}
+	
+	
+	private class ClickListner implements ActionListener{
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+	         
+			String comboBoxHighlight = (String) playListComboBox.getSelectedItem();
+			String absPath = PlayerList.getCorrectFullPath(comboBoxHighlight);
+			mp.setPath(absPath);
+			
+			if((e.getSource() == playButton)) {
+				if(mp.getSongLength() > (mp.getSongLength() - mp.getPausePos())) {
+					//TODO
+					//mp.resume();
+					//System.out.println("Clicked resume");
+				}else {
+					if(mp.getSongLength() == 0) {
+						mp.play();
+						playButton.setIcon(scaleImage(25, 25, new ImageIcon(MainGUI.class.getResource("/images/png/005-square.png"))));
+					}else {
+						playButton.setIcon(scaleImage(25, 25, new ImageIcon(MainGUI.class.getResource("/images/png/009-arrows-1.png"))));
+						mp.stop();
+					}
+				}
+			}else if(e.getSource() == stopButton) { 
+				mp.stop();
+			}else if(e.getSource() == pauseButton) {
+				//TODO
+				//mp.pause();
+			}else if(e.getSource() == forwardButton) {
+				mp.stop();
+				playListComboBox.setSelectedItem(defaultPlaylistComboBox.getIndexOf(comboBoxHighlight));
+			}		
+		}
+	}
+		
+}
+	
+	
+

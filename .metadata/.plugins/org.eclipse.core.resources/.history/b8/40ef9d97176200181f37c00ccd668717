@@ -1,0 +1,7 @@
+package travis.halleck;
+
+public class MusicPlayerError extends Exception{
+	public MusicPlayerError(String errorMsg) {
+		super(errorMsg);
+	}
+}

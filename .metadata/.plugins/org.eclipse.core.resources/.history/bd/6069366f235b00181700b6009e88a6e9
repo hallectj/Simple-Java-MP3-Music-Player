@@ -1,0 +1,198 @@
+package travis.halleck;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+
+public class MusicPlayer {
+	private String songPath;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	
+	private Object currentSound;
+	private Clip clip;
+	private AudioFormat format;
+	private AudioInputStream ais;
+	
+	private boolean isPaused, playerCompleted;
+	private Player player;
+	private long pausePos, songLen;
+	
+	public MusicPlayer(String songPath) {
+		isPaused = false;
+		this.songPath = songPath;
+		songLen = 0;
+		playerCompleted = false;
+		
+	}
+	
+	
+	
+	
+	
+	public void play() {
+		File soundFile = new File("C:\\Users\\drago\\Desktop\\meet_parents_bring_u_down.wav");
+		
+		try {
+			fis = new FileInputStream(soundFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			currentSound = AudioSystem.getAudioInputStream(soundFile);
+		} catch(Exception e1) {
+			System.out.println("Error loading file");            
+		}
+
+		try {
+			//Get the format information from the Audio Input Stream
+			AudioInputStream stream = (AudioInputStream) currentSound;
+			format = stream.getFormat();
+
+			//Get information about the line
+			DataLine.Info info = new DataLine.Info(Clip.class,
+			stream.getFormat(),
+			((int) stream.getFrameLength() * format.getFrameSize()));
+
+			//Load clip information from the line information
+			clip = (Clip) AudioSystem.getLine(info);
+
+			//Write the stream onto the clip
+			clip.open(stream);
+
+			//make the current sound the clip
+			currentSound = clip;
+
+			//start the clip
+			clip.start();
+			
+			//loop the clip continuously
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			currentSound = null;
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+//	public void play() {
+//		try {
+//			fis = new FileInputStream(songPath);
+//			bis = new BufferedInputStream(fis);
+//			songLen = bis.available();
+//			player = new Player(bis);
+//		} catch (JavaLayerException | IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		new Thread() {
+//			public void run() {
+//
+//				try {	
+//					
+//					if(player.isComplete()) {
+//						playerCompleted = true;
+//					}
+//					
+//					player.play();
+//					songLen = 0;
+//					
+//					
+//				} catch (JavaLayerException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}.start();	
+//	}
+	
+	public void stop() {
+		isPaused = false;
+		if(player != null) {
+			player.close();
+			pausePos = 0;
+			songLen = 0;
+		}
+	}
+	
+	public void pause() {
+		isPaused = true;
+		if(player != null) {
+			try {
+				pausePos = fis.available();
+				player.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//player.close();
+		}
+	}
+	
+	public void resume() {
+		try {
+			isPaused = false;
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			
+			bis.skip(songLen - pausePos);
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		new Thread() {
+			public void run() {
+				try {
+					player.play();
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
+
+	public boolean isSongPaused() {
+		return isPaused;
+	}
+	
+	public void setPath(String absPath) {
+		songPath = absPath;
+	}
+	
+	public long getPausePos() {
+		return pausePos;
+	}
+	
+	public long getSongLength() {
+		return songLen;
+	}
+	
+	public boolean isPlayerFinished() {
+		return playerCompleted;
+	}
+	
+}

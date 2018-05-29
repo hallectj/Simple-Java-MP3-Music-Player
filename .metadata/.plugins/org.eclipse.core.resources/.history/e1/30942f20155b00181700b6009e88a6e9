@@ -1,0 +1,123 @@
+package travis.halleck;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+
+public class MusicPlayer {
+	private String songPath;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	private boolean isPaused;
+	private Player player;
+	private long pausePos, songLen;
+	
+	public MusicPlayer(String songPath) {
+		isPaused = false;
+		this.songPath = songPath;
+		songLen = 0;
+	}
+	
+	public void play() {
+		try {
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			songLen = bis.available();
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		new Thread() {
+			@SuppressWarnings("deprecation")
+			public void run() {
+
+				try {
+					
+					player.play();
+					this.stop();
+					
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+		
+		
+		
+		
+	}
+	
+	public void stop() {
+		isPaused = false;
+		if(player != null) {
+			player.close();
+			pausePos = 0;
+			songLen = 0;
+		}
+	}
+	
+	public void pause() {
+		isPaused = true;
+		if(player != null) {
+			try {
+				pausePos = fis.available();
+				player.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//player.close();
+		}
+	}
+	
+	public void resume() {
+		try {
+			isPaused = false;
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			
+			bis.skip(songLen - pausePos);
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		new Thread() {
+			public void run() {
+				try {
+					player.play();
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
+
+	public boolean isSongPaused() {
+		return isPaused;
+	}
+	
+	public void setPath(String absPath) {
+		songPath = absPath;
+	}
+	
+	public long getPausePos() {
+		return pausePos;
+	}
+	
+	public long getSongLength() {
+		return songLen;
+	}
+	
+}

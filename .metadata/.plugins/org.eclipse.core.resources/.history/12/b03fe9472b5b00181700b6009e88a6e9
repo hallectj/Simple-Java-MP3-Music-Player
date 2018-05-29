@@ -1,0 +1,33 @@
+package travis.halleck;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JComboBox;
+
+public class Songs {
+	private final static String FILENAME = "file.txt";
+	
+	public Songs() {
+		
+	}
+	
+	public void writeToFile(JComboBox comboBox) throws IOException {
+		FileWriter fw = new FileWriter(FILENAME);
+		
+		if(PlayerList.getListSize() == 0) {
+			System.out.println("comboBox is empty");
+			return;
+		}
+		
+		for(int i = 0; i<comboBox.getItemCount(); i++) {
+			fw.write(comboBox.getItemAt(i).toString());
+			fw.write(System.lineSeparator());
+		}
+	}
+	
+	public void readFromFile() {
+		
+	}
+}

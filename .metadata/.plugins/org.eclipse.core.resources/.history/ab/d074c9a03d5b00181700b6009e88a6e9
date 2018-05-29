@@ -1,0 +1,21 @@
+package travis.halleck;
+
+public class ModifyPlayerlistGUI extends GenericFrame{
+	private static ModifyPlayerlistGUI singleInstance;
+	
+	private ModifyPlayerlistGUI() {
+		this.setTitle("ModifyPlayerlistGUI");
+	}
+	
+	static {
+		singleInstance = new ModifyPlayerlistGUI();
+	}
+	
+	public static ModifyPlayerlistGUI getInstane() {
+		return singleInstance;
+	}
+	
+	public static void SetVisiblity() {
+		singleInstance.setVisible(true);
+	}
+}

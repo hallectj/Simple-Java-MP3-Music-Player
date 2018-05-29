@@ -1,0 +1,35 @@
+package travis.halleck;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+public class MusicPlayer extends Thread{
+	private String songPath;
+
+	public MusicPlayer(String songPath) {
+		this.songPath = songPath;
+	}
+	
+    public void run(){
+            try {
+                    FileInputStream fileInputStream = new FileInputStream(songPath);
+                    Player player = new Player(fileInputStream);
+                    player.play();
+
+            }catch(FileNotFoundException e) {
+                e.printStackTrace();
+            }catch(JavaLayerException e) {
+                e.printStackTrace();
+            }
+
+    }
+
+}

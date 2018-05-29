@@ -1,0 +1,36 @@
+package travis.halleck;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+
+public class NewPlayerlistGUI extends GenericFrame{
+	private static NewPlayerlistGUI singleInstance;
+	
+	
+	private NewPlayerlistGUI() {
+		this.setTitle("NewPlayerlistGUI");
+		initUI();
+	}
+	
+	//Singleton code
+	public static NewPlayerlistGUI getInstane() {
+		if(singleInstance == null) {
+			singleInstance = new NewPlayerlistGUI();
+		}
+		return singleInstance;
+	}
+	
+	public static void SetVisiblity() {
+		singleInstance.setVisible(true);
+	}
+	//End of Singleton code
+	
+	
+	private void initUI() {
+		//initialize layouts		
+	}	
+	
+}

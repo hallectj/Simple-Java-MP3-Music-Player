@@ -1,0 +1,116 @@
+package travis.halleck;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class NewPlayerlistGUI extends GenericFrame{
+	private static NewPlayerlistGUI singleInstance;
+	private JPanel mainPanel;
+	private SpringLayout springLayout, panelLayout;
+	private JLabel label1, titleLabel;
+	private JTextField titleTextField;
+	private JButton importSongButton, saveToPlaylistButton, exitButton;
+
+	
+	private NewPlayerlistGUI() {
+		this.setTitle("NewPlayerlistGUI");
+		initUI();
+	}
+	
+	//Singleton code
+	public static NewPlayerlistGUI getInstane() {
+		if(singleInstance == null) {
+			singleInstance = new NewPlayerlistGUI();
+		}
+		return singleInstance;
+	}
+	
+	public static void SetVisiblity() {
+		singleInstance.setVisible(true);
+	}
+	//End of Singleton code
+	
+	
+	private void initUI() {
+		mainPanel = new JPanel();
+		springLayout = new SpringLayout();
+		panelLayout = new SpringLayout();
+		label1 = new JLabel("CREATE PLAYLIST");
+		titleLabel = new JLabel("Title:");
+		titleTextField = new JTextField(10);
+		importSongButton = new JButton("Import Song");
+		
+		saveToPlaylistButton = new JButton("Save to Playlist");
+		exitButton = new JButton("Exit");
+
+		
+		setupPanel();
+		setupLayout();
+		setupListeners();
+		
+	}	
+	
+	private void setupPanel() {
+		getContentPane().add(mainPanel);
+		getContentPane().setLayout(springLayout);
+		
+
+		mainPanel.setLayout(panelLayout);
+		mainPanel.add(label1);
+		mainPanel.add(titleLabel);
+		mainPanel.add(titleTextField);
+		mainPanel.add(importSongButton);
+		mainPanel.add(saveToPlaylistButton);
+		mainPanel.add(exitButton);
+	}
+	
+	private void setupLayout() {
+		//mainPanel layout
+		springLayout.putConstraint(SpringLayout.NORTH, mainPanel, 10, SpringLayout.NORTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, mainPanel, 10, SpringLayout.WEST, getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, mainPanel, 311, SpringLayout.NORTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, mainPanel, 509, SpringLayout.WEST, getContentPane());
+		panelLayout.putConstraint(SpringLayout.NORTH, label1, 10, SpringLayout.NORTH, mainPanel);
+		
+		panelLayout.putConstraint(SpringLayout.NORTH, titleLabel, 122, SpringLayout.NORTH, mainPanel);
+		panelLayout.putConstraint(SpringLayout.WEST, titleLabel, 97, SpringLayout.WEST, mainPanel);
+		
+		panelLayout.putConstraint(SpringLayout.EAST, label1, 0, SpringLayout.EAST, titleTextField);
+		panelLayout.putConstraint(SpringLayout.NORTH, titleTextField, -3, SpringLayout.NORTH, titleLabel);
+		panelLayout.putConstraint(SpringLayout.WEST, titleTextField, 140, SpringLayout.WEST, mainPanel);
+		panelLayout.putConstraint(SpringLayout.EAST, titleTextField, 151, SpringLayout.EAST, titleLabel);
+		
+		panelLayout.putConstraint(SpringLayout.NORTH, importSongButton, 31, SpringLayout.SOUTH, label1);
+		panelLayout.putConstraint(SpringLayout.WEST, importSongButton, 138, SpringLayout.WEST, mainPanel);
+		panelLayout.putConstraint(SpringLayout.SOUTH, importSongButton, -27, SpringLayout.NORTH, titleTextField);
+		panelLayout.putConstraint(SpringLayout.EAST, importSongButton, 254, SpringLayout.WEST, mainPanel);
+		
+		panelLayout.putConstraint(SpringLayout.WEST, saveToPlaylistButton, 31, SpringLayout.WEST, mainPanel);
+		panelLayout.putConstraint(SpringLayout.SOUTH, saveToPlaylistButton, -42, SpringLayout.SOUTH, mainPanel);
+		
+		panelLayout.putConstraint(SpringLayout.EAST, saveToPlaylistButton, -186, SpringLayout.WEST, exitButton);
+		panelLayout.putConstraint(SpringLayout.NORTH, exitButton, 0, SpringLayout.NORTH, saveToPlaylistButton);
+		panelLayout.putConstraint(SpringLayout.WEST, exitButton, -166, SpringLayout.EAST, mainPanel);
+		panelLayout.putConstraint(SpringLayout.EAST, exitButton, -49, SpringLayout.EAST, mainPanel);
+	}
+	
+	private void setupListeners() {
+		importSongButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FileSongChooser songChooser = new FileSongChooser();
+				titleTextField.setText(songChooser.getPathName());
+			}
+		});
+		
+		saveToPlaylistButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+	}
+}

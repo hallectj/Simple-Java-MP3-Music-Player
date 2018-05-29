@@ -1,0 +1,27 @@
+package travis.halleck;
+import java.io.FileNotFoundException;
+
+import javax.swing.SwingUtilities;
+
+import javazoom.jl.decoder.JavaLayerException;
+
+public class Main {
+	public static void main(String args[]) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				MainGUI baseApp;
+				try {
+					baseApp = new MainGUI();
+					baseApp.setVisible(true);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JavaLayerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}		
+		});
+	}
+}

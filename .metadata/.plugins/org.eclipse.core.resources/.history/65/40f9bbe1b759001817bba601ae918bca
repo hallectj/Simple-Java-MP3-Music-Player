@@ -1,0 +1,74 @@
+package travis.halleck;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+
+public class NewPlayerlistGUI extends GenericFrame{
+	private static NewPlayerlistGUI singleInstance;
+	private JPanel mainPanel;
+	private SpringLayout springLayout;
+	private JLabel label1, titleLabel, authorLabel;
+	private JTextField titleTextField, authorTextField;
+	private JButton importSongButton, nextSongButton, exitButton;
+
+	
+	private NewPlayerlistGUI() {
+		this.setTitle("NewPlayerlistGUI");
+		initUI();
+	}
+	
+	//Singleton code
+	public static NewPlayerlistGUI getInstane() {
+		if(singleInstance == null) {
+			singleInstance = new NewPlayerlistGUI();
+		}
+		return singleInstance;
+	}
+	
+	public static void SetVisiblity() {
+		singleInstance.setVisible(true);
+	}
+	//End of Singleton code
+	
+	
+	private void initUI() {
+		mainPanel = new JPanel();
+		springLayout = new SpringLayout();
+		label1 = new JLabel("CREATE PLAYLIST");
+		titleLabel = new JLabel("Title:");
+		authorLabel = new JLabel("Author:");
+		titleTextField = new JTextField(10);
+		authorTextField = new JTextField(10);
+		importSongButton = new JButton("Import Song");
+		nextSongButton = new JButton("Next Song");
+		exitButton = new JButton("Exit");
+		
+		setupPanel();
+		setupLayout();
+		
+	}	
+	
+	private void setupPanel() {
+		getContentPane().add(mainPanel);
+		getContentPane().setLayout(springLayout);
+		mainPanel.add(label1);
+		mainPanel.add(titleLabel);
+		mainPanel.add(authorLabel);
+		mainPanel.add(titleTextField);
+		mainPanel.add(authorTextField);
+		mainPanel.add(importSongButton);
+		mainPanel.add(nextSongButton);
+		mainPanel.add(exitButton);
+	}
+	
+	private void setupLayout() {
+		//mainPanel layout
+		springLayout.putConstraint(SpringLayout.NORTH, mainPanel, 10, SpringLayout.NORTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.WEST, mainPanel, 10, SpringLayout.WEST, getContentPane());
+		springLayout.putConstraint(SpringLayout.SOUTH, mainPanel, 311, SpringLayout.NORTH, getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, mainPanel, 509, SpringLayout.WEST, getContentPane());
+	}
+}

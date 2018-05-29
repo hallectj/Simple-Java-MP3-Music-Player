@@ -1,0 +1,158 @@
+package travis.halleck;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
+public class MusicPlayer {
+	private String songPath;
+	private FileInputStream fis;
+	private BufferedInputStream bis;
+	private boolean isPaused, playerCompleted;
+	private Player player;
+	private long pausePos, songLen;
+	private boolean isPlaying;
+	private boolean loopSong;
+	private long startTime, endTime, finalTime;
+	
+	public MusicPlayer(String songPath) {
+		isPaused = false;
+		this.songPath = songPath;
+		playerCompleted = false;
+		isPlaying = false;
+		
+	}
+	
+	public void play() {
+		try {
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			songLen = bis.available();
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				try {		
+					isPlaying = true;
+					
+					startTime = System.nanoTime();
+					player.play();
+					endTime = System.nanoTime();
+					finalTime = (endTime - startTime) / 1000000000;
+					
+					//if(finalTime == songLen) {
+						System.out.println("finalTime is: " + finalTime + " | " + "song bis " + bis.available() );
+					//}
+					
+					if(player.isComplete() && loopSong) {
+						play();
+					}
+					System.out.println("timer is: " + finalTime);
+					playerCompleted = player.isComplete();		
+				} catch (JavaLayerException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		thread.start();
+		
+	}
+	
+	public void stop() {
+		isPaused = false;
+		if(player != null) {
+			player.close();
+			pausePos = 0;
+			songLen = 0;
+			isPlaying = false;
+		}
+	}
+	
+	public void pause() {
+		isPaused = true;
+		if(player != null) {
+			try {
+				pausePos = fis.available();
+				player.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void resume() {
+		try {
+			isPaused = false;
+			fis = new FileInputStream(songPath);
+			bis = new BufferedInputStream(fis);
+			
+			bis.skip(songLen - pausePos);
+			
+			player = new Player(bis);
+		} catch (JavaLayerException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		new Thread() {
+			public void run() {
+				try {
+					
+					player.play();
+				
+				} catch (JavaLayerException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
+	}
+	
+	public void loop() {
+		if(loopSong) {
+			play();
+		}
+	}
+	
+
+	public boolean isSongPaused() {
+		return isPaused;
+	}
+	
+	public void setPath(String absPath) {
+		songPath = absPath;
+	}
+	
+	public String getPath() {
+		return songPath;
+	}
+	
+	public long getPausePos() {
+		return pausePos;
+	}
+	
+	public long getSongLength() {
+		return songLen;
+	}
+	
+	public boolean isPlayerFinished() {
+		return playerCompleted;
+	}
+	
+	public boolean isSongPlaying() {
+		return isPlaying;
+	}
+	
+	public boolean isRepeating() {
+		return loopSong;
+	}
+	
+	public void setRepeat(boolean repeat) {
+		loopSong = repeat;
+	}
+}

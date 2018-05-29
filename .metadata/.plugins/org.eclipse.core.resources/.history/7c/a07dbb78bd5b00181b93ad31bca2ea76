@@ -1,0 +1,32 @@
+package travis.halleck;
+
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+
+public class GenericFrame extends JFrame{
+	
+	private int winWidth = 525;
+	private int winHeight = winWidth - (winWidth / 3);
+	
+	public GenericFrame() {
+		setUpFrame();
+	}
+	
+	private void setUpFrame() {
+		this.setSize(winWidth, winHeight);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension dim = tk.getScreenSize();
+		int xPos = (dim.width/2) - (this.getWidth()/2);
+		int yPos = (dim.height/2) - (this.getHeight()/2);
+		
+		this.setLocation(xPos, yPos);
+		this.setResizable(false);
+		
+		if(this instanceof MainGUI) {
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}else {
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		}
+	}
+}

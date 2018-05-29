@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="System" key="selection"/>
+		<item value="saveList" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="saveList"/>
+			<item value="Button"/>
+			<item value="PlaylistFile"/>
+			<item value="read"/>
+			<item value="forward"/>
+			<item value="fast"/>
+			<item value="enableSpecial"/>
+			<item value="deleteButton"/>
+			<item value="empty"/>
+			<item value="plf"/>
+			<item value="enabled"/>
+			<item value="save"/>
 			<item value="System"/>
 			<item value="Resume"/>
 			<item value="resume pressed"/>
-			<item value="repeat"/>
-			<item value="isPlaying"/>
-			<item value="stop"/>
-			<item value="pause icon"/>
-			<item value="timer is"/>
-			<item value="FileSong"/>
-			<item value="music"/>
-			<item value="getCombo"/>
-			<item value="fuck"/>
-			<item value="playerCom"/>
-			<item value="bottomPanel"/>
-			<item value="spring"/>
 		</list>
 		<list key="replacehistory">
 		</list>

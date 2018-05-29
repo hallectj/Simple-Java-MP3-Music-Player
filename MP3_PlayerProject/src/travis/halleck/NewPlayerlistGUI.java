@@ -18,9 +18,14 @@ public class NewPlayerlistGUI extends GenericFrame{
 	private JTextField titleTextField;
 	private JButton importSongButton, saveToPlaylistButton, exitButton;
 	private FileSongChooser songChooser;
+<<<<<<< HEAD
 	private PlaylistFile plf;
 	
 	private NewPlayerlistGUI() { 
+=======
+	
+	private NewPlayerlistGUI() {
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		this.setTitle("Simple Java Music Player");
 		initUI();
 	}	
@@ -120,7 +125,10 @@ public class NewPlayerlistGUI extends GenericFrame{
 					MainGUI.getComboBox().addElement(PlayerList.getPlayerListName());
 				}
 				titleTextField.setText("");
+<<<<<<< HEAD
 				
+=======
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 			}
 		});
 		

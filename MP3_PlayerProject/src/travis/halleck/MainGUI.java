@@ -165,7 +165,7 @@ public class MainGUI extends GenericFrame {
 		leftPanelLayout.putConstraint(SpringLayout.WEST, playListComboBox, 22, SpringLayout.WEST, leftPanel);
 		leftPanelLayout.putConstraint(SpringLayout.WEST, saveListButton, 10, SpringLayout.WEST, leftPanel);
 		leftPanelLayout.putConstraint(SpringLayout.SOUTH, saveListButton, -10, SpringLayout.SOUTH, leftPanel);
-		leftPanelLayout.putConstraint(SpringLayout.EAST, saveListButton, 98, SpringLayout.WEST, playListComboBox);
+		
 
 		//centerPanel Layout
 		centerPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));

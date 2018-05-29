@@ -11,14 +11,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+<<<<<<< HEAD
+=======
 import javax.swing.JOptionPane;
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.LineBorder;
 
+<<<<<<< HEAD
+=======
 import java.awt.BorderLayout;
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -30,6 +36,10 @@ import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+<<<<<<< HEAD
+import java.awt.SystemColor;
+=======
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 
 public class MainGUI extends GenericFrame {
 	private static final long serialVersionUID = 1L;
@@ -38,9 +48,14 @@ public class MainGUI extends GenericFrame {
 	private static DefaultComboBoxModel<String> defaultPlaylistComboBox;
 	private JComboBox<String> playListComboBox;
 	private JLabel label1, label2;
+<<<<<<< HEAD
+	private JButton newPlayListButton, deleteButton, saveListButton;
+	private SpecialButtons playButton, loopButton, rewindButton, forwardButton, pauseButton, stopButton;
+	private PlaylistFile plf;
+=======
 	private JButton newPlayListButton, deleteButton;
 	private SpecialButtons playButton, loopButton, rewindButton, forwardButton, pauseButton, stopButton;
-	private FileSongChooser fsg;
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 	
 	private static int loopClicks = 0;
 	private MusicPlayer mp;
@@ -53,18 +68,19 @@ public class MainGUI extends GenericFrame {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	
-		
 	public static DefaultComboBoxModel getComboBox() {
 		return defaultPlaylistComboBox;
 	}
 	
+<<<<<<< HEAD
+	private void initUI()  {
+=======
 	private void initUI() {
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		//initialize layouts
 		mainPanelLayout = new SpringLayout();
 		leftPanelLayout = new SpringLayout();
 		centerPanelLayout = new SpringLayout();
-		
 		
 		//initialize panels needed
 		mainPanel = new JPanel();
@@ -73,30 +89,61 @@ public class MainGUI extends GenericFrame {
 		centerPanel = new JPanel();
 		bottomPanel = new JPanel();
 		
-		
 		//initialize labels needed
 		label1 = new JLabel("JAVA MUSIC PLAYER");
 		label2 = new JLabel("Playlist");
-
 		
 		//initialize buttons needed
 		newPlayListButton = new JButton("New Playlist");
+<<<<<<< HEAD
+		deleteButton = new JButton("Delete Song");	
+		saveListButton = new JButton("Save Playlist");
+		saveListButton.setBackground(SystemColor.inactiveCaption);
+		saveListButton.setOpaque(true);
+=======
 		deleteButton = new JButton("Delete Song");		
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		
 		//playlist combobox
 		defaultPlaylistComboBox = new DefaultComboBoxModel<String>();
 		playListComboBox = new JComboBox<String>(defaultPlaylistComboBox);
+<<<<<<< HEAD
+		playListComboBox.setPreferredSize(new Dimension(80, 25));
+		
+		try {
+			plf = new PlaylistFile(defaultPlaylistComboBox);
+			if(plf.doesFileExist()) {
+				plf.readFromFiles();
+			}	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+=======
 		playListComboBox.setPreferredSize(new Dimension(80, 25));		
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		
 		setupPanels();
 		setupLayout();
 		initEnterFrame();
 		specialButtonEvents();
+<<<<<<< HEAD
+		
+		if(PlayerList.getListSize() == 0) {
+			enableSpecialButtons(false);
+			deleteButton.setEnabled(false);
+		}else {
+			enableSpecialButtons(true);
+			deleteButton.setEnabled(true);
+		}
+	}
+	
+=======
 		enableSpecialButtons(false);
 		
 	}
 	
 	
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 	public void enableSpecialButtons(boolean enable) {
 		Component[] component = bottomPanel.getComponents();
 		for(int i = 0; i<bottomPanel.getComponentCount(); i++) {
@@ -152,6 +199,12 @@ public class MainGUI extends GenericFrame {
 		leftPanelLayout.putConstraint(SpringLayout.WEST, label2, 45, SpringLayout.WEST, leftPanel);
 		leftPanelLayout.putConstraint(SpringLayout.NORTH, playListComboBox, 6, SpringLayout.SOUTH, label2);
 		leftPanelLayout.putConstraint(SpringLayout.WEST, playListComboBox, 22, SpringLayout.WEST, leftPanel);
+<<<<<<< HEAD
+		leftPanelLayout.putConstraint(SpringLayout.WEST, saveListButton, 10, SpringLayout.WEST, leftPanel);
+		leftPanelLayout.putConstraint(SpringLayout.SOUTH, saveListButton, -10, SpringLayout.SOUTH, leftPanel);
+		leftPanelLayout.putConstraint(SpringLayout.EAST, saveListButton, 98, SpringLayout.WEST, playListComboBox);
+=======
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 
 		//centerPanel Layout
 		centerPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -176,10 +229,7 @@ public class MainGUI extends GenericFrame {
 		picLabel.setIcon(scaleImage(250, 100, new ImageIcon(MainGUI.class.getResource("/images/music_pic.jpg"))));
 		innerPanel.add(picLabel);
 		
-		
-		
 		//Gridbag layout for specialbuttons to consider
-		
 		loopButton = new SpecialButtons("loop", 25, 25);
 		GridBagConstraints gbc_loopButton = new GridBagConstraints();
 		gbc_loopButton.anchor = GridBagConstraints.WEST;
@@ -188,7 +238,6 @@ public class MainGUI extends GenericFrame {
 		gbc_loopButton.gridx = 1;
 		gbc_loopButton.gridy = 0;
 		bottomPanel.add(loopButton, gbc_loopButton);
-		
 		
 		
 		rewindButton = new SpecialButtons("rewind", 25, 25);
@@ -201,7 +250,6 @@ public class MainGUI extends GenericFrame {
 		bottomPanel.add(rewindButton, gbc_rewindButton);
 		
 		
-		
 		forwardButton = new SpecialButtons("forward", 25, 25);
 		GridBagConstraints gbc_forwardButton = new GridBagConstraints();
 		gbc_forwardButton.anchor = GridBagConstraints.WEST;
@@ -210,7 +258,6 @@ public class MainGUI extends GenericFrame {
 		gbc_forwardButton.gridx = 3;
 		gbc_forwardButton.gridy = 0;
 		bottomPanel.add(forwardButton, gbc_forwardButton);
-		
 		
 		
 		playButton = new SpecialButtons("play", 25, 25);
@@ -223,7 +270,6 @@ public class MainGUI extends GenericFrame {
 		bottomPanel.add(playButton, gbc_playButton);
 		
 		
-		
 		pauseButton = new SpecialButtons("pause", 25, 25);
 		GridBagConstraints gbc_pauseButton = new GridBagConstraints();
 		gbc_pauseButton.anchor = GridBagConstraints.WEST;
@@ -232,8 +278,6 @@ public class MainGUI extends GenericFrame {
 		gbc_pauseButton.gridx = 5;
 		gbc_pauseButton.gridy = 0;
 		bottomPanel.add(pauseButton, gbc_pauseButton);
-		
-		
 		
 		
 		stopButton = new SpecialButtons("stop", 25, 25);
@@ -260,6 +304,10 @@ public class MainGUI extends GenericFrame {
 		//add to left panel
 		leftPanel.add(label2);
 		leftPanel.add(playListComboBox);
+<<<<<<< HEAD
+		leftPanel.add(saveListButton);
+=======
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		
 		//General gridbag layout for specialButtons
 		GridBagLayout gbl_bottomPanel = new GridBagLayout();
@@ -276,16 +324,35 @@ public class MainGUI extends GenericFrame {
 		centerPanel.add(newPlayListButton);
 		centerPanel.add(deleteButton);
 		
-		deleteButton.setEnabled(false);
-		
-			    
+<<<<<<< HEAD
+		//deleteButton.setEnabled(false);	    
+=======
+		deleteButton.setEnabled(false);	    
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 	}
 	
 	@SuppressWarnings("static-access")
 	private void initEnterFrame() {
 		newPlayListButton.addActionListener((ActionEvent frameEvent) -> {
-			NewPlayerlistGUI playListGUI = NewPlayerlistGUI.getInstane();
+			NewPlayerlistGUI playListGUI = NewPlayerlistGUI.getInstance();
 			playListGUI.SetVisiblity();
+<<<<<<< HEAD
+			saveListButton.setBackground(SystemColor.activeCaption);
+		});
+		
+		saveListButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				saveListButton.setBackground(SystemColor.LIGHT_GRAY);
+				try {
+					plf = new PlaylistFile(defaultPlaylistComboBox);
+					plf.writeToFiles();
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+=======
+>>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		});
 		
 		deleteButton.addActionListener((ActionEvent framEvent) -> {
@@ -323,8 +390,6 @@ public class MainGUI extends GenericFrame {
 		
 	}
 	
-	
-	
 	private ImageIcon scaleImage(int w, int h, ImageIcon icon) {
 		 Image img = icon.getImage();
 		 Image newImg = img.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
@@ -333,7 +398,7 @@ public class MainGUI extends GenericFrame {
 	}
 	
 	private void specialButtonEvents() {
-		ClickListner cl = new ClickListner();
+		ClickLisetner cl = new ClickLisetner();
 		playButton.addActionListener(cl);
 		pauseButton.addActionListener(cl);
 		forwardButton.addActionListener(cl);
@@ -342,47 +407,44 @@ public class MainGUI extends GenericFrame {
 		stopButton.addActionListener(cl);
 	}
 	
-	private class ClickListner implements ActionListener{
+	private class ClickLisetner implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			SpecialButtons clicked = (SpecialButtons)e.getSource();
+			
 			String comboBoxHighlight = (String) playListComboBox.getSelectedItem();
 			String absPath = PlayerList.getCorrectFullPath(comboBoxHighlight);
 			mp.setPath(absPath);
 			
-			if((e.getSource() == playButton)) {
-				if(mp.isSongPlaying() && !mp.isSongPaused()) {
-					System.out.println("Playing");
-				}else if(mp.isSongPaused() && !mp.isSongPlaying()){
-					System.out.println("Resume ");
+			if((clicked == playButton)) {
+				if(mp.isSongPaused() && !mp.isSongPlaying()){
 					mp.resume();
-					
 				}else if(mp.getSongLength() == 0) {
-					System.out.println("Not Playing");
 					mp.play();
 				}
-				
-			}else if(e.getSource() == stopButton) {
-				if(mp.isSongPlaying()) {
+			}else if(clicked == stopButton) {
+				mp.stop();
+			}else if(clicked == pauseButton) {
+				if(mp.getSongLength() == 0) {
 					mp.stop();
+				}else {
+					if(mp.isSongPaused()) {
+						return;
+					}else {
+						mp.pause();
+					}
 				}
-			}else if(e.getSource() == pauseButton) {
-				if(!mp.isSongPaused()) {
-					mp.pause();
-				}else if(mp.getCurrentTime() == 0) {
-					//Needed if the user clicks pause to begin with, prevents thread from running
-					mp.stop();
-				}
-			}else if(e.getSource() == forwardButton) {
+			}else if(clicked == forwardButton) {
 				mp.stop();
 				if(defaultPlaylistComboBox.getIndexOf(comboBoxHighlight)+1 != defaultPlaylistComboBox.getSize()) {
 					playListComboBox.setSelectedIndex(defaultPlaylistComboBox.getIndexOf(comboBoxHighlight)+1);
 				}
-			}else if(e.getSource() == rewindButton) {
+			}else if(clicked == rewindButton) {
 				mp.stop();
 				if(defaultPlaylistComboBox.getIndexOf(comboBoxHighlight)-1 >= 0) {
 					playListComboBox.setSelectedIndex(defaultPlaylistComboBox.getIndexOf(comboBoxHighlight)-1);
 				}
-			}else if(e.getSource() == loopButton) {
+			}else if(clicked == loopButton) {
 				loopClicks++;
 				if(loopClicks == 10) {
 					loopClicks = 0;
@@ -395,11 +457,9 @@ public class MainGUI extends GenericFrame {
 					loopButton.setIcon(scaleImage(25, 25, new ImageIcon(MainGUI.class.getResource("/images/png/001-arrows-6.png"))));
 					mp.setRepeat(false);
 				}
-			}
-				
+			}	
 		}
 	}
-
 }
 	
 	

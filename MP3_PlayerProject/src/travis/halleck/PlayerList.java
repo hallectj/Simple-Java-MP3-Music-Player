@@ -48,19 +48,11 @@ public class PlayerList {
     public static String getFullPathByIndex(int index) {
     	return playerPathList.get(index);
     }
-<<<<<<< HEAD
-
-    public static String getNamesByIndex(int index) {
-    	return playerNameList.get(index);
-    }
-    
-=======
     
     public static String getNamesByIndex(int index) {
     	return playerNameList.get(index);
     }
 
->>>>>>> 5f499da9b033047aa7705665cecbe8e2d393eca8
     public static void removeItem(String item) {
     	int index = getItemIndex(item);
     	nameCount--;
@@ -68,13 +60,4 @@ public class PlayerList {
     	playerPathList.remove(index);
     	playerNameList.remove(index);
     }
-<<<<<<< HEAD
-    
-=======
-    
-    public static void emptyAll() {
-    	playerPathList.clear();
-    	playerNameList.clear();
-    }
->>>>>>> 5f499da9b033047aa7705665cecbe8e2d393eca8
 }

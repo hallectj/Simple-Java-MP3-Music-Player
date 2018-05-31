@@ -1,0 +1,5 @@
+package travis.halleck;
+
+public interface ComboBoxListener {
+
+}

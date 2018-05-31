@@ -2,12 +2,17 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="saveList" key="selection"/>
+		<item value="saveListButton" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="saveListButton"/>
+			<item value="fileErroredOut"/>
+			<item value="getItem"/>
+			<item value="path"/>
+			<item value="-&gt;"/>
 			<item value="saveList"/>
 			<item value="Button"/>
 			<item value="PlaylistFile"/>
@@ -18,11 +23,6 @@
 			<item value="deleteButton"/>
 			<item value="empty"/>
 			<item value="plf"/>
-			<item value="enabled"/>
-			<item value="save"/>
-			<item value="System"/>
-			<item value="Resume"/>
-			<item value="resume pressed"/>
 		</list>
 		<list key="replacehistory">
 		</list>

@@ -1,11 +1,17 @@
 package travis.halleck;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class GenericFrame extends JFrame{
-	private static final long serialVersionUID = 7868085554841431315L;
+	private static final long serialVersionUID = 1L;
 	private int winWidth = 525;
 	private int winHeight = winWidth - (winWidth / 3);
 	

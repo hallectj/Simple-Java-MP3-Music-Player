@@ -1,0 +1,7 @@
+package travis.halleck;
+
+public interface ComboBoxListener {
+
+	void removeItem(int index);
+
+}

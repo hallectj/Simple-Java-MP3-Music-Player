@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="../external_jars_folder/jl1.0.1.jar" destdir="doc" doctitle="Java Simple MP3 Music Player" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="travis.halleck" source="1.8" sourcepath="src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

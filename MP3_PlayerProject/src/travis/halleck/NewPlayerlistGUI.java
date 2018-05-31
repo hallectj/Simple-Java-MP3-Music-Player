@@ -7,7 +7,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
+
 
 public class NewPlayerlistGUI extends GenericFrame{
 	private static final long serialVersionUID = 1L;
@@ -18,14 +20,8 @@ public class NewPlayerlistGUI extends GenericFrame{
 	private JTextField titleTextField;
 	private JButton importSongButton, saveToPlaylistButton, exitButton;
 	private FileSongChooser songChooser;
-<<<<<<< HEAD
-	private PlaylistFile plf;
-	
-	private NewPlayerlistGUI() { 
-=======
 	
 	private NewPlayerlistGUI() {
->>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 		this.setTitle("Simple Java Music Player");
 		initUI();
 	}	
@@ -55,6 +51,8 @@ public class NewPlayerlistGUI extends GenericFrame{
 		
 		saveToPlaylistButton = new JButton("Save to Playlist");
 		exitButton = new JButton("Exit");
+		
+		mainPanel.setBackground(new Color( 136, 165, 124 ));
 
 		setupPanel();
 		setupLayout();
@@ -125,17 +123,12 @@ public class NewPlayerlistGUI extends GenericFrame{
 					MainGUI.getComboBox().addElement(PlayerList.getPlayerListName());
 				}
 				titleTextField.setText("");
-<<<<<<< HEAD
-				
-=======
->>>>>>> 0bf3db91d33d43c45bd7a02af0558d1542c1d0ee
 			}
 		});
 		
-		exitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-			}
+		
+		exitButton.addActionListener((ActionEvent evt) -> {
+			dispose();
 		});
 	}
 		

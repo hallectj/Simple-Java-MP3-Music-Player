@@ -27,6 +27,8 @@ public class SpecialButtons extends JButton{
 	}
 
 	//helper method for resizing icon image to ensure programmer controls the size rendered
+	
+	
 	private ImageIcon scaleImage(int w, int h, ImageIcon icon) {
 		 Image img = icon.getImage();
 		 Image newImg = img.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);

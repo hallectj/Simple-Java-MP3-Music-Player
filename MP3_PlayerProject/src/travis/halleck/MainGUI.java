@@ -85,6 +85,11 @@ public class MainGUI extends GenericFrame {
 		playListComboBox = new JComboBox<String>(defaultPlaylistComboBox);
 		playListComboBox.setPreferredSize(new Dimension(80, 25));
 		
+		mainPanel.setBackground(new Color( 136, 165, 124 ));
+		centerPanel.setBackground(new Color( 148, 191, 163 ));
+		leftPanel.setBackground(new Color( 148, 191, 163 ));
+		bottomPanel.setBackground(new Color( 148, 191, 163 ));
+		
 		try {
 			plf = new PlaylistFile(defaultPlaylistComboBox);
 			if(plf.doesFileExist()) {
@@ -106,6 +111,10 @@ public class MainGUI extends GenericFrame {
 			enableSpecialButtons(true);
 			deleteButton.setEnabled(true);
 		}
+		
+
+		
+		
 	}
 	
 	public void enableSpecialButtons(boolean enable) {
@@ -367,7 +376,22 @@ public class MainGUI extends GenericFrame {
 			String absPath = PlayerList.getCorrectFullPath(comboBoxHighlight);
 			mp.setPath(absPath);
 			
+			
+			//TODO  There are a series of if statements I would like to clean up below
+			//Everything works, I just want to clean it up and refactor later.
+			
 			if((clicked == playButton)) {
+				//The mp.setComboBoxListener only runs if the user has moved
+				//or renamed a file, it is otherwise skipped.
+				
+				mp.setComboBoxListener(new ComboBoxListener() {
+					@Override
+					public void removeItem(String item)  {
+						defaultPlaylistComboBox.removeElement(item);	
+					}
+				});
+				
+					
 				if(mp.isSongPaused() && !mp.isSongPlaying()){
 					mp.resume();
 				}else if(mp.getSongLength() == 0) {
@@ -411,6 +435,7 @@ public class MainGUI extends GenericFrame {
 			}	
 		}
 	}
+
 }
 	
 	

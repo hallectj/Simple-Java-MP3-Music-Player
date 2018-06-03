@@ -118,6 +118,11 @@ public class PlayerList {
      * Removes song from player list
      * @param item
      */
+    
+    public static String getNamesByIndex(int index) {
+    	return playerNameList.get(index);
+    }
+
     public static void removeItem(String item) {
     	int index = getItemIndex(item);
     	nameCount--;

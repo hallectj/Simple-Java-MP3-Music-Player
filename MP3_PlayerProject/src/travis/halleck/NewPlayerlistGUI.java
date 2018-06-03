@@ -30,8 +30,8 @@ public class NewPlayerlistGUI extends GenericFrame{
 	private SpringLayout springLayout, panelLayout;
 	private JLabel label1, titleLabel;
 	private JTextField titleTextField;
+
 	private JButton importSongButton, saveToPlaylistButton, exitButton;
-	
 	private FileSongChooser songChooser;
 	private PlaylistFile plf;
 	

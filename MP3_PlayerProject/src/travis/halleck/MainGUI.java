@@ -30,6 +30,12 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.SystemColor;
 
+/**
+ * 
+ * @author Travis Halleck
+ *
+ */
+
 public class MainGUI extends GenericFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel mainPanel, leftPanel, centerPanel, innerPanel, bottomPanel;
@@ -40,6 +46,9 @@ public class MainGUI extends GenericFrame {
 	private JButton newPlayListButton, deleteButton, saveListButton;
 	private SpecialButtons playButton, loopButton, rewindButton, forwardButton, pauseButton, stopButton;
 	private PlaylistFile plf;
+	
+	//loopClicks is needed so I can determine even and odd numbers to know if the loop
+	//button is "on" or "off"
 	
 	private static int loopClicks = 0;
 	private MusicPlayer mp;
@@ -90,6 +99,8 @@ public class MainGUI extends GenericFrame {
 		leftPanel.setBackground(new Color( 148, 191, 163 ));
 		bottomPanel.setBackground(new Color( 148, 191, 163 ));
 		
+		//Populate the comboBox and ArrayLists if music_names.txt and music_paths.txt 
+		//exist.  The two ArrayList are located in the PlayerList class
 		try {
 			plf = new PlaylistFile(defaultPlaylistComboBox);
 			if(plf.doesFileExist()) {
@@ -104,20 +115,23 @@ public class MainGUI extends GenericFrame {
 		initEnterFrame();
 		specialButtonEvents();
 		
+		//If no song exist, disable all the special buttons (ie stop, play, next song, etc)
+		//Also disables the delete button since there is nothing to delete.  However if mp3's
+		//are read from the text files or user adds them via the addPlayList button on the next
+		//frame then all the buttons will be enabled.
 		if(PlayerList.getListSize() == 0) {
 			enableSpecialButtons(false);
 			deleteButton.setEnabled(false);
 		}else {
 			enableSpecialButtons(true);
 			deleteButton.setEnabled(true);
-		}
-		
-
-		
-		
+		}	
 	}
 	
-	public void enableSpecialButtons(boolean enable) {
+	//If the component is a JButton and is an instance of SpecialButtons then
+	//setEnable to true or false.
+	
+	private void enableSpecialButtons(boolean enable) {
 		Component[] component = bottomPanel.getComponents();
 		for(int i = 0; i<bottomPanel.getComponentCount(); i++) {
 			if(component[i] instanceof SpecialButtons) {
@@ -130,6 +144,7 @@ public class MainGUI extends GenericFrame {
 		}
 	}
 	
+	//Windows look and feel
 	private void lookAndFeel() {
         try {
 		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -315,13 +330,15 @@ public class MainGUI extends GenericFrame {
 			}
 		});
 		
-		deleteButton.addActionListener((ActionEvent framEvent) -> {
+		
+		deleteButton.addActionListener((ActionEvent evt) -> {
 			String highlight = defaultPlaylistComboBox.getSelectedItem().toString();
-			playButton.setIcon(scaleImage(25, 25, new ImageIcon(MainGUI.class.getResource("/images/png/009-arrows-1.png"))));
+			
 			int lastSlash = mp.getPath().lastIndexOf("\\");
 			if(mp.getPath().substring(lastSlash+1, mp.getPath().length()).equals(highlight)) {
 				mp.stop();
 			}	
+			
 			
 			defaultPlaylistComboBox.removeElement(highlight);
 			PlayerList.removeItem(highlight);
@@ -344,6 +361,14 @@ public class MainGUI extends GenericFrame {
                 if(event.getStateChange() == ItemEvent.SELECTED) {
                 	enableSpecialButtons(true);
                 	deleteButton.setEnabled(true);
+                	
+                	//If the user had renamed the file or moved it, then rewrite the
+                	//songs to the text file.  Note, this only works if there is more 
+                	//than one user error.  This is a known bug that needs to be addressed
+                	
+                	if(mp.didFileErrorOut()) {
+                		plf.writeToFiles();
+                	}
                 }	
 			}
         });
@@ -377,8 +402,11 @@ public class MainGUI extends GenericFrame {
 			mp.setPath(absPath);
 			
 			
-			//TODO  There are a series of if statements I would like to clean up below
-			//Everything works, I just want to clean it up and refactor later.
+			//TODO  There is a bug where if the user plays a song, presses pause,
+			//then selects a different song, presses play and then pause again.  What
+			//happens is, is the song plays and the pause will act as the stop button.
+			//if the stop is pressed everything is back to normal, so somewhere I need
+			//to check for that behavior and add an additional mp.stop().
 			
 			if((clicked == playButton)) {
 				//The mp.setComboBoxListener only runs if the user has moved
@@ -387,10 +415,9 @@ public class MainGUI extends GenericFrame {
 				mp.setComboBoxListener(new ComboBoxListener() {
 					@Override
 					public void removeItem(String item)  {
-						defaultPlaylistComboBox.removeElement(item);	
+						defaultPlaylistComboBox.removeElement(item);
 					}
-				});
-				
+				});				
 					
 				if(mp.isSongPaused() && !mp.isSongPlaying()){
 					mp.resume();
@@ -403,10 +430,13 @@ public class MainGUI extends GenericFrame {
 				if(mp.getSongLength() == 0) {
 					mp.stop();
 				}else {
+					//This prevents the user from crashing the program if the user
+					//keeps pressing pause.
 					if(mp.isSongPaused()) {
 						return;
 					}else {
 						mp.pause();
+						System.out.println("just pause");
 					}
 				}
 			}else if(clicked == forwardButton) {
@@ -424,7 +454,9 @@ public class MainGUI extends GenericFrame {
 				if(loopClicks == 10) {
 					loopClicks = 0;
 				}
-								
+						
+				//If odd number (on) then loop button is toggled with darken image
+				//and the repeat is set to true.
 				if(loopClicks % 2 != 0) {
 					mp.setRepeat(true);
 					loopButton.setIcon(scaleImage(25, 25, new ImageIcon(MainGUI.class.getResource("/images/png/002-arrows-5.png"))));

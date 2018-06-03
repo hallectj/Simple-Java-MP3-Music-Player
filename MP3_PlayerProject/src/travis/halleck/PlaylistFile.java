@@ -14,6 +14,12 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 
+/**
+ * 
+ * @author Travis Halleck
+ *
+ */
+
 public class PlaylistFile {
 	private DefaultComboBoxModel<String> cbBox;
 	private BufferedReader brNames, brPaths;
@@ -59,13 +65,13 @@ public class PlaylistFile {
 			populateCB();
 	}
 	
-	public void writeToFiles() throws IOException  {
+	public void writeToFiles() {
 		try {
 			bwNames = new BufferedWriter(new FileWriter(NamesOnList));
 			bwPaths = new BufferedWriter(new FileWriter(PathsOnList));
 			
 			for(int i = 0; i<PlayerList.getListSize(); i++) {
-				bwNames.write(PlayerList.getNamesByIndex(i));
+				bwNames.write(PlayerList.getPlayerListName(i));
 				bwNames.newLine();
 				bwPaths.write(PlayerList.getFullPathByIndex(i));
 				bwPaths.newLine();
@@ -74,8 +80,13 @@ public class PlaylistFile {
 			e.printStackTrace();
 			e.getMessage();
 		}
-		bwNames.close();
-		bwPaths.close();
+		try {
+			bwNames.close();
+			bwPaths.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void populateCB(){
@@ -96,6 +107,17 @@ public class PlaylistFile {
 	
 	public int getLength() {
 		return lineCount;
+	}
+	
+	public boolean isSongInFile(String searchTerm) {
+		boolean foundIt = false;
+		for(int i = 0; i<songNames.size(); i++) {
+			if(searchTerm.equals(songNames.get(i))) {
+				foundIt = true;
+				break;
+			}
+		}
+		return foundIt;
 	}
 	
 }

@@ -1,5 +1,9 @@
 package travis.halleck;
 import java.io.IOException;
+/**
+ * @author Travis Halleck
+ * Starting point for the program to run.  
+ */
 
 import javax.swing.SwingUtilities;
 

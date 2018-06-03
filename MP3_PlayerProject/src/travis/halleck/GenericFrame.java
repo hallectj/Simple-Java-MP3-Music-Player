@@ -10,6 +10,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * 
+ * @author Travis Halleck
+ * Sets up basic attributes I want for frames, such as size and
+ * setting the frame to the middle of the computer screen.
+ *
+ */
 public class GenericFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private int winWidth = 525;

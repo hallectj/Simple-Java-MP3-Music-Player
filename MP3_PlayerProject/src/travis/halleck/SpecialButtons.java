@@ -5,6 +5,15 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * 
+ * @author Travis Halleck
+ * All of the special buttons, such as play, next song, previous song, stop, etc.
+ * Each of the special buttons has an icon associated with it's function, for example
+ * the stop button has the stop icon.  Icon images are found in the getResource.
+ *
+ */
+
 public class SpecialButtons extends JButton{
 	private static final long serialVersionUID = 1L;
 
@@ -27,8 +36,6 @@ public class SpecialButtons extends JButton{
 	}
 
 	//helper method for resizing icon image to ensure programmer controls the size rendered
-	
-	
 	private ImageIcon scaleImage(int w, int h, ImageIcon icon) {
 		 Image img = icon.getImage();
 		 Image newImg = img.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);

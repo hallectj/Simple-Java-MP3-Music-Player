@@ -3,32 +3,52 @@ package travis.halleck;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
+/**
+ * 
+ * @author Travis Halleck
+ * All of the basic functions you would expect in an mp3 player
+ * 
+ *
+ */
+
 public class MusicPlayer {
 	private String songPath;
 	private FileInputStream fis;
 	private BufferedInputStream bis;
-	private boolean isPaused, playerCompleted, isPlaying, loopSong, stopClicked;
+	private boolean isPaused, playerCompleted, isPlaying, loopSong;
 	private Player player;
 	private long pausePosInBits, songLenInBits, currentTime;
 	
 	private boolean fileErroredOut;  //error occurs when user renames file or moves file.
 	private ComboBoxListener cbListener;
 	
+	/**
+	 * 
+	 * @param songPath which is ultimately retrieved via the PlayerList class
+	 */
+	
 	public MusicPlayer(String songPath) {
 		this.songPath = songPath;
 		isPaused = false;
 		playerCompleted = false;
 		isPlaying = false;	
-		stopClicked = false;
 		fileErroredOut = false;
 	}
 	
+	/**
+	 * Instead of creating a comboBox component, I decided to pass in the 
+	 * interface in case later I decide to use some other component to display
+	 * playerlist other than a combobox.  This decision was made to decouple.
+	 * @param comboBoxListener
+	 */
 	public void setComboBoxListener(ComboBoxListener comboBoxListener) {
 		this.cbListener = comboBoxListener;
 	}
@@ -63,7 +83,12 @@ public class MusicPlayer {
 		    //aware of, although there shouldn't be any.
 		    e.printStackTrace();
 		}
-		
+		/**
+		 * currentTime is the song in seconds played, so if you were
+		 * to pause the song after 5 seconds, then current time would be
+		 * 5 seconds.  Every play, pause and resume sets flags so MainGUI knows 
+		 * what to do.
+		 */
 		Thread thread = new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -80,7 +105,7 @@ public class MusicPlayer {
 						songLenInBits = 0;
 						currentTime = 0;
 						
-						if(loopSong) { loop(); }else{ stop(); }
+						if(loopSong) { loop(); }
 					}
 					
 					playerCompleted = player.isComplete();
@@ -93,9 +118,11 @@ public class MusicPlayer {
 		thread.start();
 	}
 	
+	/**
+	 * resets all the flags and stops the mp3
+	 */
 	public void stop() {
 		isPaused = false;
-		stopClicked = true;
 		if(player != null) {
 			player.close();
 			pausePosInBits = 0;
@@ -127,6 +154,8 @@ public class MusicPlayer {
 			bis.skip(songLenInBits - pausePosInBits);
 			
 			player = new Player(bis);
+			
+			
 		} catch (JavaLayerException | IOException e) {
 			
 			fileErroredOut = true;
@@ -156,10 +185,11 @@ public class MusicPlayer {
 						songLenInBits = 0;
 						currentTime = 0;
 						
-						if(loopSong) {
-							loop();
-						}
+						if(loopSong) { loop(); }
 					}
+					
+					
+					
 				
 				} catch (JavaLayerException e) {
 					e.printStackTrace();
@@ -167,6 +197,7 @@ public class MusicPlayer {
 			}
 		}.start();
 	}
+	
 	
 	public void loop() {
 		if(loopSong) {
@@ -176,30 +207,59 @@ public class MusicPlayer {
 		}
 	}
 	
+	/**
+	 * If user has an mp3 that is moved or renamed in current playlist that
+	 * doesn't jive with path from PlayerList ArrayList.
+	 * @return boolean true if user error found.
+	 */
 	public boolean didFileErrorOut() {
 		return 	fileErroredOut;
 	}
 
+	/**
+	 * 
+	 * @return boolean true if song is paused
+	 */
 	public boolean isSongPaused() {
 		return isPaused;
 	}
 	
+	/**
+	 * Sets the song path, done in MainGUI.
+	 * @param absPath
+	 */
 	public void setPath(String absPath) {
 		songPath = absPath;
 	}
 	
+	/**
+	 * 
+	 * @return String song path, path of course is the location on user's computer of song.
+	 */
 	public String getPath() {
 		return songPath;
 	}
 	
+	/**
+	 * This is the pause position according to the BufferedInputStream available bytes.
+	 * @return long position where user paused the mp3
+	 */
 	public long getPausePos() {
 		return pausePosInBits;
 	}
 	
+	/**
+	 * Song length
+	 * @return long song length according to BufferedInputStream
+	 */
 	public long getSongLength() {
 		return songLenInBits;
 	}
 	
+	/**
+	 * Is player finished playing mp3 song.
+	 * @return boolean
+	 */
 	public boolean isPlayerFinished() {
 		return playerCompleted;
 	}
@@ -208,25 +268,40 @@ public class MusicPlayer {
 		return isPlaying;
 	}
 	
+	/**
+	 * If user presses loop button
+	 * @return boolean
+	 */
 	public boolean isRepeating() {
 		return loopSong;
 	}
+	
 	
 	public void setRepeat(boolean repeat) {
 		loopSong = repeat;
 	}
 	
+	/**
+	 * Current time is the song in seconds.  If user clicks pause after 
+	 * 5 seconds, then currentTime returns long 5.
+	 * @return long current time of song in seconds.
+	 */
+	
 	public long getCurrentTime() {
 		return currentTime;
 	}
 	
-	private void showStats() {
-		System.out.println();
-		System.out.println("pausePos: " + pausePosInBits + " songLen: " + songLenInBits + " currentTime: " + currentTime);
-		System.out.println("isPaused: " + isPaused + " isPlaying: " + isPlaying + " loopSong " + loopSong);
-		System.out.println();
+	/**
+	 * Gets the song name that is playing
+	 * @return String
+	 */
+	public String getSongName() {
+		return songPath.substring(songPath.lastIndexOf("\\")+1, songPath.length());
 	}
 	
+	/**
+	 * Handles the error if user moves the mp3 file or changes the name of the file
+	 */
 	private void handleMoveAndRenameFileError() {
 		int lastSlasth = songPath.lastIndexOf("\\") + 1;
 		String name = songPath.substring(lastSlasth, songPath.length());	

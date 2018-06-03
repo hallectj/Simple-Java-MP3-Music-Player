@@ -49,7 +49,7 @@ public class FileSongChooser {
 	
 	/**
 	 * Returns the name on the song derived from the file name
-	 * @return   the name of the song 
+	 * @return String the name of the song 
 	 */
 	
 	public String getPlaylistName() {
@@ -57,7 +57,7 @@ public class FileSongChooser {
 	}
 	
 	/**
-	 * @return   the full path of the file so the Player class can locate 
+	 * @return String the full path of the file so the Player class can locate 
 	 * the song, again path is dependent upon user's location of files
 	 *
 	 */

@@ -10,6 +10,18 @@ import java.io.File;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
+/**
+ * 
+ * @author Travis Halleck.
+ * This is the second frame that allows the user to import songs
+ * into the playlist located in the MainGUI.  A singleton is used to
+ * prevent multiple instances of the frame window opening because 
+ * there should never be a time where a multiple windows are appropriate.
+ * 
+ * Once the user adds songs via the saveToPlaylistButton the  PlayerList 
+ * ArrayList populates.  The FileSongChooser class is used here which is an
+ * Extension of the JFileChooser class
+ */
 
 public class NewPlayerlistGUI extends GenericFrame{
 	private static final long serialVersionUID = 1L;
